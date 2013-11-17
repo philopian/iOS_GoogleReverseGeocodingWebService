@@ -8,11 +8,14 @@
 
 #import "ViewController.h"
 
+
 @interface ViewController () <CLLocationManagerDelegate>
+
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic) float currentLat;
 @property (nonatomic) float currentLng;
 @property (nonatomic) BOOL userEnableGPSUse;
+
 @end
 
 @implementation ViewController
@@ -64,59 +67,98 @@
 
 
 
+- (bool)hasInternet {
+    NSURL *url = [[NSURL alloc] initWithString:@"http://www.google.com"];
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url
+                                                  cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
+                                              timeoutInterval:5.0];
+    BOOL connectedToInternet = NO;
+    if ([NSURLConnection sendSynchronousRequest:request
+                              returningResponse:nil
+                                          error:nil]) {
+        connectedToInternet = YES;
+    }
+
+    return connectedToInternet;
+}
+
+
 
 -(void)getJSONDataFromWebReverseGeocoding
 {
-    dispatch_queue_t fetchedDataThread = dispatch_queue_create("fetchDataRGeocoding", NULL);
     
-    // create WebService URL
-    NSString *root = @"http://maps.googleapis.com/maps/api/geocode/json?latlng=";
-    NSString *userLocation = [NSString stringWithFormat:@"%f,%f", _currentLat, _currentLng];
-    NSString *endPiece= @"&sensor=false";
-    NSString *urlString = [NSString stringWithFormat:@"%@%@%@",
-                           root,
-                           userLocation,
-                           endPiece];
-    //NSLog(@"%@",urlString);
-    NSURL *url = [NSURL URLWithString:urlString];
     
-    // block object
-    dispatch_async(fetchedDataThread, ^(void){
-        // [NSThread sleepForTimeInterval:3];
-
-        //parse out the json data
-        NSError* error = nil;
-        NSData *data = [[NSData alloc] initWithContentsOfURL:url];
-        NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:data
-                                                                 options:0
-                                                                   error:&error];
+    
+    if ([self hasInternet]) {
         
-        if (jsonDict) {
-            NSMutableArray *address = [[NSMutableArray alloc]init];
-            for (id webServiceResult in [jsonDict objectForKey:@"results"]){
-                NSString *currentAddress = [webServiceResult objectForKey:@"formatted_address"];
-                
-                [address addObject:currentAddress];
-            }
-            if ([address count]>0) {
-                //NSLog(@"%@",[address objectAtIndex:0]);
-                NSString *addressResult = [NSString stringWithFormat:@"Current Address: \n%@",[address objectAtIndex:0] ];
-                
-                self.addressResult = addressResult;
-                
-                
-                dispatch_sync(dispatch_get_main_queue(), ^{
-                    self.txtCurrentAddress.text = self.addressResult;
-                });
-            }
+        
+        @try {
+            dispatch_queue_t fetchedDataThread = dispatch_queue_create("fetchDataRGeocoding", NULL);
             
-        } else {
-            NSLog(@"%@",error);
+            // create WebService URL
+            NSString *root = @"http://maps.googleapis.com/maps/api/geocode/json?latlng=";
+            NSString *userLocation = [NSString stringWithFormat:@"%f,%f", _currentLat, _currentLng];
+            NSString *endPiece= @"&sensor=false";
+            NSString *urlString = [NSString stringWithFormat:@"%@%@%@",
+                                   root,
+                                   userLocation,
+                                   endPiece];
+            //NSLog(@"%@",urlString);
+            NSURL *url = [NSURL URLWithString:urlString];
+            
+            // block object
+            dispatch_async(fetchedDataThread, ^(void){
+                // [NSThread sleepForTimeInterval:3];
+                
+                //parse out the json data
+                NSError* error = nil;
+                NSData *data = [[NSData alloc] initWithContentsOfURL:url];
+                NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:data
+                                                                         options:0
+                                                                           error:&error];
+                
+                if (jsonDict) {
+                    NSMutableArray *address = [[NSMutableArray alloc]init];
+                    for (id webServiceResult in [jsonDict objectForKey:@"results"]){
+                        NSString *currentAddress = [webServiceResult objectForKey:@"formatted_address"];
+                        
+                        [address addObject:currentAddress];
+                    }
+                    if ([address count]>0) {
+                        //NSLog(@"%@",[address objectAtIndex:0]);
+                        NSString *addressResult = [NSString stringWithFormat:@"Current Address: \n%@",[address objectAtIndex:0] ];
+                        
+                        self.addressResult = addressResult;
+                        
+                        
+                        dispatch_sync(dispatch_get_main_queue(), ^{
+                            self.txtCurrentAddress.text = self.addressResult;
+                        });
+                    }
+                    
+                } else {
+                    NSLog(@"%@",error);
+                    NSString *addressResult = [NSString stringWithFormat:@"Current Address: \n Currently Unavailable"];
+                    
+                    self.addressResult = addressResult;
+                }
+                
+            });
         }
-  
-    });
-
-    
+        @finally {
+            NSString *addressResult = [NSString stringWithFormat:@"Current Address: \n Currentlu Unavailable"];
+            
+            self.addressResult = addressResult;
+        }
+        
+    } else {
+        NSLog(@"No Internet connection!");
+        
+        NSString *addressResult = [NSString stringWithFormat:@"Current Address: \nNo Internet Connection Available"];
+        
+        self.addressResult = addressResult;
+    }
+ 
 }
 
 

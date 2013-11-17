@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BB5F704B1837467F009B0D38 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB5F704A1837467F009B0D38 /* SystemConfiguration.framework */; };
 		BB79A469182DF48B005BFC17 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB79A468182DF48B005BFC17 /* Foundation.framework */; };
 		BB79A46B182DF48B005BFC17 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB79A46A182DF48B005BFC17 /* CoreGraphics.framework */; };
 		BB79A46D182DF48B005BFC17 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB79A46C182DF48B005BFC17 /* UIKit.framework */; };
@@ -38,6 +39,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BB5F704A1837467F009B0D38 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		BB79A465182DF48B005BFC17 /* GoogleWebServiceReverseGeoCodingWithJSON.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoogleWebServiceReverseGeoCodingWithJSON.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB79A468182DF48B005BFC17 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		BB79A46A182DF48B005BFC17 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -67,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB5F704B1837467F009B0D38 /* SystemConfiguration.framework in Frameworks */,
 				BB79A4A7182DF5E3005BFC17 /* MapKit.framework in Frameworks */,
 				BB79A4A5182DF5DD005BFC17 /* CoreLocation.framework in Frameworks */,
 				BB79A46B182DF48B005BFC17 /* CoreGraphics.framework in Frameworks */,
@@ -110,6 +113,7 @@
 		BB79A467182DF48B005BFC17 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BB5F704A1837467F009B0D38 /* SystemConfiguration.framework */,
 				BB79A4A6182DF5E2005BFC17 /* MapKit.framework */,
 				BB79A4A4182DF5DD005BFC17 /* CoreLocation.framework */,
 				BB79A468182DF48B005BFC17 /* Foundation.framework */,
@@ -484,6 +488,7 @@
 				BB79A49C182DF48B005BFC17 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		BB79A49D182DF48B005BFC17 /* Build configuration list for PBXNativeTarget "GoogleWebServiceReverseGeoCodingWithJSONTests" */ = {
 			isa = XCConfigurationList;
@@ -492,6 +497,7 @@
 				BB79A49F182DF48B005BFC17 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
